@@ -8,6 +8,18 @@ router.get('/', (req, res, next) => { // only '/' needed because it will already
     })
 })
 
+// CREATE
+router.post('/', (req, res, next) => {
+    const order = {
+        productId: req.body.productId,
+        quantity: req.body.property
+    }
+    res.status(201).json({
+        message: 'order was created',
+        order: order
+    })
+})
+
 // GET ONE
 router.get('/:orderId', (req, res, next) => {
     const id = req.params.orderId;
@@ -17,12 +29,6 @@ router.get('/:orderId', (req, res, next) => {
     })
 })
 
-// CREATE
-router.post('/', (req, res, next) => {
-    res.status(200).json({
-        message: 'order was created '
-    })
-})
 
 // PATCH (update)
 router.patch('/:orderId', (req, res, next) => {

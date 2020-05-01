@@ -8,7 +8,14 @@ router.get('/', (req, res, next) => { // only '/' needed because it will already
 
 // CREATE
 router.post('/', (req, res, next) => {
-    res.status(200).json({ message: 'Handling product post request' })
+    const product = {
+        name: req.body.name,
+        price: req.body.price
+    }
+    res.status(201).json({
+        message: 'Handling product post request',
+        createdProduct: product
+    })
 })
 
 // GET ONE
