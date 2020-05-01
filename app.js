@@ -3,17 +3,22 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan')
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+// const Order = require('./api/routes/model/order');
 
 app.use(morgan('dev')); // before routes
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+// CORS error handler
 app.use((req, res, next) => { // to add the CORS header to every request. (before routes)
     res.header('Access-Control-Allow-Origin', "*") // '*' to give access to any origin
     res.header(
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
+        );
     if (req.method === 'OPTIONS'){ // req.method gives access to HTTP method used 
         res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE')
         return res.status(200).json({})
@@ -43,6 +48,9 @@ app.use((error, req, res, next) => { // to handle all errors incliding DB ones
         }
     })
 });
+
+/* DB CONNECTION */
+mongoose.connect(process.env.PATH, { useNewUrlParser: true }, () => console.log("connected to DB"))
 
 module.exports = app;
 
