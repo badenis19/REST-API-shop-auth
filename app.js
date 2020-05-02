@@ -4,6 +4,7 @@ const app = express();
 const morgan = require('morgan')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+// require('dotenv/config');
 
 // const Order = require('./api/routes/model/order');
 
@@ -18,8 +19,8 @@ app.use((req, res, next) => { // to add the CORS header to every request. (befor
     res.header(
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-        );
-    if (req.method === 'OPTIONS'){ // req.method gives access to HTTP method used 
+    );
+    if (req.method === 'OPTIONS') { // req.method gives access to HTTP method used 
         res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE')
         return res.status(200).json({})
     }
@@ -50,7 +51,12 @@ app.use((error, req, res, next) => { // to handle all errors incliding DB ones
 });
 
 /* DB CONNECTION */
-mongoose.connect(process.env.PATH, { useNewUrlParser: true }, () => console.log("connected to DB"))
+mongoose.connect("mongodb+srv://Bruno:mongo20@cluster0-vvlzp.mongodb.net/test?retryWrites=true&w=majority",
+    { 
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    },
+    () => console.log("connected to DB"))
 
 module.exports = app;
 
