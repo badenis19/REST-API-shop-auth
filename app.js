@@ -52,11 +52,13 @@ app.use((error, req, res, next) => { // to handle all errors incliding DB ones
 
 /* DB CONNECTION */
 mongoose.connect("mongodb+srv://Bruno:mongo20@cluster0-vvlzp.mongodb.net/test?retryWrites=true&w=majority",
-    { 
+    {
         useNewUrlParser: true,
         useUnifiedTopology: true
     },
-    () => console.log("connected to DB"))
+    () => console.log("connected to DB"));
+
+// mongoose.Promise = global.Promise // Tp use default node implementation
 
 module.exports = app;
 
