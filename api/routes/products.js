@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => { // only '/' needed because it will already
           return {
             name: doc.name,
             price: doc.price,
-            _id: doc.id,
+            _id: doc._id, //
             request: {
               type: 'GET',
               url: 'http://localhost:3000/products/' + doc._id
@@ -57,10 +57,10 @@ router.post('/', (req, res, next) => {
         name: result.name,
         price: result.price,
         _id: result._id,
-        request: {
-          type: 'GET',
-          url: 'http://localhost:3000/products/' + result._id
-        }
+      },
+      request: {
+        type: 'GET',
+        url: 'http://localhost:3000/products/' + result._id
       }
     })
   }).catch(err => {
