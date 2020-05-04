@@ -9,6 +9,7 @@ const Product = require('../model/product');
 router.get('/', (req, res, next) => { // only '/' needed because it will already have /products from app.js
   Order.find({})
     .select('product quantity _id')
+    .populate('product', 'name') // (name of property, property filter)
     .exec()
     .then(docs => {
       console.log(docs)
@@ -25,7 +26,7 @@ router.get('/', (req, res, next) => { // only '/' needed because it will already
             }
           }
         })
-      })
+      }) 
     })
     .catch(err => {
       console.log(err)
@@ -79,6 +80,7 @@ router.post('/', (req, res, next) => {
 router.get('/:orderId', (req, res, next) => {
   const id = req.params.orderId;
   Order.findById(id)
+  .populate('product') 
     .exec()
     .then(order => {
       console.log(order);

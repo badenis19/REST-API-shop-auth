@@ -162,6 +162,5 @@ router.delete('/:productId', (req, res, next) => {
     })
 })
 
-
 module.exports = router;
 
