@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 // const Order = require('./api/routes/model/order');
 
 app.use(morgan('dev')); // before routes
+app.use("/uploads", express.static('uploads')) // to make tjhe upload folder public
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
