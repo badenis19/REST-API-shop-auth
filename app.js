@@ -1,7 +1,7 @@
 /* IMPORTS */
 const express = require('express');
 const app = express();
-const morgan = require('morgan')
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 // require('dotenv/config');
@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 // const Order = require('./api/routes/model/order');
 
 app.use(morgan('dev')); // before routes
-app.use("/uploads", express.static('uploads')) // to make tjhe upload folder public
+app.use('/uploads', express.static('uploads')) // to make tjhe upload folder public
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -31,10 +31,13 @@ app.use((req, res, next) => { // to add the CORS header to every request. (befor
 /* ROUTES */
 const orderRoutes = require('./api/routes/orders')
 const productRoutes = require('./api/routes/products')
+const userRoutes = require('./api/routes/user')
 
 /* MIDDLEWARE */
 app.use('/products', productRoutes); // all '/products' requst will be forwarded to the productRoutes
 app.use('/orders', orderRoutes);
+app.use('/user', userRoutes);
+
 
 app.use((req, res, next) => { // handle error for unknown routes, to send specific message
     const error = new Error('Not found');

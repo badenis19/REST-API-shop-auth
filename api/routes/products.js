@@ -15,7 +15,7 @@ const storage = multer.diskStorage({ // executed everytime a new file is receive
   }
 })
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req, file, cb) => { // To only accept certain file types
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
     cb(null, true) // will store a file
   } else {
@@ -54,13 +54,7 @@ router.get('/', (req, res, next) => { // only '/' needed because it will already
         })
       }
       console.log(docs)
-      // if(doc.length >= 0 ){ // error handling if nothing is returned from query
       res.status(200).json(response);
-      // } else {
-      //     res.status(404).json({
-      //         message: "No entries found"
-      //     })
-      // }
     })
     .catch(err => {
       console.log(err)
