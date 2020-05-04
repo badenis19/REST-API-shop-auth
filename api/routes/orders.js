@@ -78,28 +78,43 @@ router.post('/', (req, res, next) => {
 // GET ONE
 router.get('/:orderId', (req, res, next) => {
   const id = req.params.orderId;
-  res.status(200).json({
-    message: 'specific order fetched',
-    id: id
-  })
-})
+  Order.findById(id)
+    .exec()
+    .then(order => {
+      console.log(order);
+      if (order) {
+        res.status(200).json({
+          order: order,
+          request: {
+            type: 'GET',
+            url: 'http://localhost:3000/orders'
+          }
+        });
+      } else {
+        res.status(404).json({ message: "No valid entry found for provided id" });
+      }
 
-
-// PATCH (update)
-router.patch('/:orderId', (req, res, next) => {
-  const id = req.params.orderId;
-  res.status(200).json({
-    message: "updated order",
-  })
+    })
 })
 
 // DELETE
 router.delete('/:orderId', (req, res, next) => {
   const id = req.params.orderId;
-  res.status(200).json({
-    message: "deleted order",
-    id: id
-  })
+  Order.remove({ _id: id })
+    .exec()
+    .then(result => {
+      result.status(200).json({
+        message: "Order deleled",
+        request: {
+          type: "POST",
+          url: 'http://localhost:3000/orders',
+          body: { name: 'String', price: 'Number' }
+        }
+      });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err });
+    })
 })
 
 module.exports = router;
