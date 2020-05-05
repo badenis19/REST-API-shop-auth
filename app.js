@@ -4,7 +4,7 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-// require('dotenv/config');
+require('dotenv/config');
 
 // const Order = require('./api/routes/model/order');
 
@@ -55,7 +55,7 @@ app.use((error, req, res, next) => { // to handle all errors incliding DB ones
 });
 
 /* DB CONNECTION */
-mongoose.connect("mongodb+srv://Bruno:mongo20@cluster0-vvlzp.mongodb.net/test?retryWrites=true&w=majority",
+mongoose.connect(process.env.URI,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -65,4 +65,3 @@ mongoose.connect("mongodb+srv://Bruno:mongo20@cluster0-vvlzp.mongodb.net/test?re
 // mongoose.Promise = global.Promise // Tp use default node implementation
 
 module.exports = app;
-

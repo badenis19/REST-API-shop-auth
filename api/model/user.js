@@ -6,7 +6,7 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true, // does make the field unique, just performance optimization
-        match: /.+@.+\..+/i
+        match: /.+@.+\..+/i // regex to ensure it has email address format
     },
     password: {
         type: String,

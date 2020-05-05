@@ -153,7 +153,7 @@ router.patch('/:productId', (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      result.status(500).json({ error: err });
+      res.status(500).json({ error: err });
 
     })
 })
@@ -173,7 +173,7 @@ router.delete('/:productId', (req, res, next) => {
   Product.remove({ _id: id })
     .exec()
     .then(result => {
-      result.status(200).json({
+      res.status(200).json({
         message: "Product deleled",
         request: {
           type: "POST",

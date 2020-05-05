@@ -1,7 +1,8 @@
 const express = require('express');
-const router = express.Router(); // importing express router
+const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../model/user')
 
@@ -69,13 +70,65 @@ router.post('/signup', (req, res, next) => {
     })
 })
 
+// Create token
+router.post('/login', (req, res, next) => {
+  User.find({ email: req.body.email })
+    .exec()
+    .then(user => {
+      if (user.length < 1) { // check if user exists
+        return res.status(401).json({
+          message: "Auth failed"
+        })
+      }
+      bcrypt.compare(req.body.password, user[0].password, (err, result) => { // check if password is correct. compare given password with one stored in DB.
+        if (err) {
+          console.log(err)
+          return res.status(401).json({
+            message: "Auth failed"
+          })
+        }
+
+        if (result) { // To add token and return it to the user
+          const token = jwt.sign(
+            {
+              email: user[0].email,
+              userId: user[0]._id
+            },
+            process.env.JWT_KEY,
+            {
+              expiresIn: "1h"
+            }
+          )
+
+          console.log("Auth successful")
+          console.log(token)
+
+          return res.status(200).json({
+            message: "Auth successful",
+            token: token
+          })
+        } else {
+          console.log("Auth failed")
+          return res.status(401).json({
+            message: "Auth failed"
+          })
+        }
+      })
+    })
+    .catch(err => {
+      res.status(500).json({ error: err });
+    });
+})
+
+
+
 // Delete
 router.delete('/:userId', (req, res, next) => {
   const id = req.params.userId;
   User.remove({ _id: id })
     .exec()
     .then(result => {
-      result.status(200).json({
+      res.status(200).json({
         message: "User deleled"
       });
     })
