@@ -122,6 +122,8 @@ router.post('/login', (req, res, next) => {
 
 
 
+
+
 // Delete
 router.delete('/:userId', (req, res, next) => {
   const id = req.params.userId;

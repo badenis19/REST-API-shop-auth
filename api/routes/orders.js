@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const checkAuth = require('../middleware/check-auth');
 
 const Order = require('../model/order');
 const Product = require('../model/product');
 
 // ALL 
-router.get('/', (req, res, next) => { // only '/' needed because it will already have /products from app.js
+router.get('/', checkAuth, (req, res, next) => { // only '/' needed because it will already have /products from app.js
   Order.find({})
     .select('product quantity _id')
     .populate('product', 'name') // (name of property, property filter)
@@ -26,7 +27,7 @@ router.get('/', (req, res, next) => { // only '/' needed because it will already
             }
           }
         })
-      }) 
+      })
     })
     .catch(err => {
       console.log(err)
@@ -37,7 +38,7 @@ router.get('/', (req, res, next) => { // only '/' needed because it will already
 })
 
 // CREATE
-router.post('/', (req, res, next) => {
+router.post('/', checkAuth, (req, res, next) => {
   Product.findById(req.body.productId) // check if we have product for a given ID before
     .then(product => {
       if (!product) {
@@ -77,10 +78,10 @@ router.post('/', (req, res, next) => {
 });
 
 // GET ONE
-router.get('/:orderId', (req, res, next) => {
+router.get('/:orderId', checkAuth, (req, res, next) => {
   const id = req.params.orderId;
   Order.findById(id)
-  .populate('product') 
+    .populate('product')
     .exec()
     .then(order => {
       console.log(order);
@@ -100,12 +101,12 @@ router.get('/:orderId', (req, res, next) => {
 })
 
 // DELETE
-router.delete('/:orderId', (req, res, next) => {
+router.delete('/:orderId', checkAuth, (req, res, next) => {
   const id = req.params.orderId;
   Order.remove({ _id: id })
     .exec()
     .then(result => {
-      result.status(200).json({
+      res.status(200).json({
         message: "Order deleled",
         request: {
           type: "POST",
